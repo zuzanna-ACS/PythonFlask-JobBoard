@@ -15,18 +15,14 @@ def open_connection():
     connection.row_factory = sqlite3.Row
   return connection
 
-def execute_sql():
+def execute_sql(sql,values = (), commit = False, single = False):
   connection = open_connection()
-  sql = ""
-  values = ()
-  commit = False
-  single = False
   cursor = connection.execute(sql,values)
   if(commit): 
     results = connection.commit()
   else: 
     results = cursor.fetchone() if single else cursor.fetchall()
-    cursor.close
+  cursor.close()
   return results
 
 @app.teardown_appcontext
